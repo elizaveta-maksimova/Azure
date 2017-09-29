@@ -1,0 +1,81 @@
+﻿.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+input[type=text], input[type=number], input[type=file], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=button] {
+    width: 40%;
+    background-color: #4CA7D0;
+    color: white;
+    padding: 14px 20px;
+    margin: 15px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#upload {
+    background-color: #4CAF50;
+}
+
+#upload:hover { background-color: #45a049; }
+
+#uploadAndSave:hover { background-color: #4CA7C0; }
+
+div[class=form] {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 40px;
+}
+
+div[class=new-request] {
+    color: black;
+    font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+div[class=request-label] { color: white; }
+
+input[type=file] {
+    color: black;
+    background: white;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#login { font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+ /* styles for validation helpers */
+.field-validation-error {
+    color: #ff3300;
+}
+ 
+.field-validation-valid {
+    display: none;
+}
+ 
+input.input-validation-error {
+    border: 1px solid #ff3300;
+}
+ 
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+ 
+.validation-summary-errors {
+    color: #ff3300;
+}
+ 
+.validation-summary-valid {
+    display: none;
+}

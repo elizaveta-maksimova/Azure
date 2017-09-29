@@ -1,0 +1,11 @@
+﻿<h3>Result</h3>
+<a href="@ViewBag.SasLink">@ViewBag.SasLink</a>
+
+@if (ViewBag.Blobs != null)
+{
+    foreach (var item in ViewBag.Blobs)
+     {
+         @item.Name
+         <br />
+     }
+}

@@ -1,0 +1,143 @@
+﻿@model  MVC_WebApplication.Models.ProductViewModel
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section id="products" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Our products</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var product in Model.Products)
+            {
+                <div class="col-md-3 col-sm-6 portfolio-item">
+                    <a class="portfolio-link">
+                        <img src="@product.ImageName" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>@product.Title</h4>
+                        <p class="text-muted">@product.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section id="request" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Add new product request</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="new-request">
+                    <form id="myDataForm">
+                        <fieldset>
+                            <div class="request-label">
+                                @Html.LabelFor(model => model.NewProduct.Title)
+                            </div>
+                            <div>
+                                @Html.TextBoxFor(model => model.NewProduct.Title, new { id = "formTitle" })
+                                @Html.ValidationMessageFor(model => model.NewProduct.Title)
+                            </div>
+
+                            <div class="request-label">
+                                @Html.LabelFor(model => model.NewProduct.Price)
+                            </div>
+                            <div>
+                                @Html.TextBoxFor(model => model.NewProduct.Price, new { id = "formPrice" })
+                                @Html.ValidationMessageFor(model => model.NewProduct.Price)
+                            </div>
+
+                            <div class="request-label">
+                                @Html.LabelFor(model => model.NewProduct.Description)
+                            </div>
+                            <div>
+                                @Html.TextBoxFor(model => model.NewProduct.Description, new { id = "formDescription" })
+                                @Html.ValidationMessageFor(model => model.NewProduct.Description)
+                            </div>
+
+                            <div>
+                                <input type="file" name="fileUpload" />
+                            </div>
+                            <input type="button" name="uploadName" id="uploadAndSave" value="Upload and save" />
+                            <input type="button" name="uploadName" id="upload" value="Only upload" />
+                        </fieldset>
+                    </form>
+                </div>
+                <br />
+                <div id="result" style="color: white"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                @Html.ActionLink("Download", "Download");
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#uploadAndSave').click(function () {
+
+                var modelIsValid = $('#myDataForm').valid();
+                if (modelIsValid) {
+                    var data = new FormData();
+                    var file = $('form input[type=file]')[0].files[0];
+                    data.append('file', file);
+                    var formObject = {
+                        Title: $("#formTitle").val(),
+                        Price: $("#formPrice").val(),
+                        Description: $("#formDescription").val()
+                    };
+                    data.append('jsonData', JSON.stringify(formObject));
+                    $.ajax({
+                        url: '/api/file/upload',
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        type: 'POST',
+                        success: function (result) {
+                            $('#result').html(result);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#upload').click(function () {
+
+                var data = new FormData();
+                var file = $('form input[type=file]')[0].files[0];
+                data.append('file', file);
+                $.ajax({
+                    url: '/api/file/upload',
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    type: 'POST',
+                    success: function (result) {
+                        $('#result').html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}

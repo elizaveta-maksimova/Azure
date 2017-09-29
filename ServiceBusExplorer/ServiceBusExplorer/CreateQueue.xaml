@@ -1,0 +1,45 @@
+﻿<Window x:Class="ServiceBusExplorer.CreateQueue"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServiceBusExplorer"
+        xmlns:commands="clr-namespace:ServiceBusExplorer.Commands"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="Create" Height="210" Width="500"
+        Icon="/Resources/Images/Service Bus.ico"
+        Background="{DynamicResource AppBackgroundBrush}"
+        Foreground="{DynamicResource AppForegroundBrush}"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static commands:RoutedCommands.CreateQueue}" CanExecute="CanCreate" Executed="Create"/>
+    </Window.CommandBindings>
+    <Grid DataContext="{Binding CreateQueueViewModel, Source={StaticResource Locator}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Center">Create Service Bus Queue</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}" Text="Name:"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Style="{DynamicResource TextBoxStyle}"  VerticalAlignment="Center" Text="{Binding Name, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}" Text="Size (Gb):"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Style="{DynamicResource TextBoxStyle}" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Size, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}" Text="Enable partitions:"/>
+        <CheckBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Margin="{DynamicResource ControlMargin}" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding EnablePartitioning, Mode=TwoWay}"/>
+        <Button Grid.Row="5" Grid.Column="3" Content="Create"  Style="{DynamicResource ButtonStyle}" Command="{x:Static commands:RoutedCommands.CreateQueue}" CommandParameter="{Binding}"/>
+    </Grid>
+</Window>

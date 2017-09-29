@@ -1,0 +1,50 @@
+﻿<Window x:Class="ServiceBusExplorer.StartProcessing"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServiceBusExplorer"
+        xmlns:commands="clr-namespace:ServiceBusExplorer.Commands"
+        xmlns:converters="clr-namespace:ServiceBusExplorer.Converters"
+        xmlns:messaging="clr-namespace:Microsoft.ServiceBus.Messaging;assembly=Microsoft.ServiceBus"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        Title="Start Processing" Height="210" Width="500"
+        Icon="/Resources/Images/Service Bus.ico"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource AppBackgroundBrush}"
+        Foreground="{DynamicResource AppForegroundBrush}"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+    <Window.Resources>
+        <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static commands:RoutedCommands.StartProcessing}" CanExecute="CanStart" Executed="Start"/>
+    </Window.CommandBindings>
+    <Grid DataContext="{Binding ProcessMessageViewModel, Source={StaticResource Locator}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Center">Start Processing</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}" Text="Recieve Mode:"/>
+        <RadioButton Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="{DynamicResource ControlMargin}" Foreground="{DynamicResource AppForegroundBrush}" VerticalAlignment="Center" HorizontalAlignment="Left" Content="Receive and Delete" IsChecked="{Binding Mode, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static messaging:ReceiveMode.ReceiveAndDelete}}"/>
+        <RadioButton Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="{DynamicResource ControlMargin}" Foreground="{DynamicResource AppForegroundBrush}" VerticalAlignment="Center" HorizontalAlignment="Left" Content="Peek and Lock" IsChecked="{Binding Mode, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static messaging:ReceiveMode.PeekLock}}"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}" Text="Timeout:"/>
+        <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Style="{DynamicResource TextBoxStyle}" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Timeout, Mode=TwoWay}"/>
+
+        <Button Grid.Row="5" Grid.Column="3" Content="Start"  Style="{DynamicResource ButtonStyle}" Command="{x:Static commands:RoutedCommands.StartProcessing}" CommandParameter="{Binding}"/>
+    </Grid>
+</Window>

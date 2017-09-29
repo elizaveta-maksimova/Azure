@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#EEEEF2"/>
+    <SolidColorBrush x:Key="AppForegroundBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="HighlightedBackgroundBrush" Color="#CCCEDB" />
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#CCCEDB"/>
+    <SolidColorBrush x:Key="HighlightedControlBackgroundBrush" Color="#007ACC"/>
+    <SolidColorBrush x:Key="HighlightedControlForegroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="PressedControlBackgroundBrush" Color="#3399FF"/>
+    <SolidColorBrush x:Key="PressedControlForegroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="DisabledControlBackgroundBrush" Color="#496464"/>
+    <SolidColorBrush x:Key="StatusControlBackgroundBrush" Color="#007ACC"/>
+    <SolidColorBrush x:Key="ConsoleBackgroundBrush" Color="#1E1E1E"/>
+</ResourceDictionary>
