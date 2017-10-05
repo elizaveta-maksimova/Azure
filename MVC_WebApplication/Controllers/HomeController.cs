@@ -100,7 +100,7 @@ namespace MVC_WebApplication.Controllers
 
         public FileResult Download()
         {
-            byte[] fileBytes = _storageDataAccess.DownloadRangeExampleParallel("50MBFile1.zip");
+            byte[] fileBytes = _storageDataAccess.DownloadFileInBlocks("50MBFile1.zip");
             string fileName = "50MBFile1.zip";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }

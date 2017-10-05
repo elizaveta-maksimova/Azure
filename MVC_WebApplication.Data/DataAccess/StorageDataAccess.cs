@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -20,6 +19,8 @@ namespace MVC_WebApplication.Data.DataAccess
     {
         private const string ConnectionStringSettingName = "StorageConnectionString";
         private const string ContainerName = "products";
+
+        #region Upload & Download
 
         public void Upload(byte[] file, string fileName)
         {
@@ -81,7 +82,6 @@ namespace MVC_WebApplication.Data.DataAccess
             long fileSize = file.Length;
 
             int blockId = 0;
-
 
             while (fileSize > 0)
             {
@@ -205,7 +205,7 @@ namespace MVC_WebApplication.Data.DataAccess
             blob.PutBlockList(blockList, null, options);
         }
 
-        public byte[] DownloadRangeExample(string fileName)
+        public byte[] DownloadFileInBlocks(string fileName)
         {
             CloudBlobContainer cloudBlobContainer = GetContainerReference();
             CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(Path.GetFileName(fileName));
@@ -231,7 +231,7 @@ namespace MVC_WebApplication.Data.DataAccess
             return blobContents;
         }
 
-        public byte[] DownloadRangeExampleParallel(string fileName)
+        public byte[] DownloadFileImBlocksParallel(string fileName)
         {
             CloudBlobContainer cloudBlobContainer = GetContainerReference();
             CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(Path.GetFileName(fileName));
@@ -302,6 +302,10 @@ namespace MVC_WebApplication.Data.DataAccess
             return Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}", blockId.ToString("0000000"))));
         }
 
+        #endregion
+
+        #region Service SAS
+
         public string GetBlobSas(string path)
         {
             CloudBlobContainer container = GetContainerReference();
@@ -314,7 +318,6 @@ namespace MVC_WebApplication.Data.DataAccess
             };
 
             string sasContainerToken = blob.GetSharedAccessSignature(policy);
-
             return blob.Uri + sasContainerToken;
         }
 
@@ -329,6 +332,8 @@ namespace MVC_WebApplication.Data.DataAccess
             };
 
             string sasContainerToken = container.GetSharedAccessSignature(policy);
+
+            // to use with not .NET libs, but with google for ex. should add 'restype=container&comp=list' to URI
             return container.Uri + sasContainerToken;
         }
 
@@ -338,9 +343,12 @@ namespace MVC_WebApplication.Data.DataAccess
             var cloudBlobContainer = new CloudBlobContainer(new Uri(sas));
 
             List<IListBlobItem> list = cloudBlobContainer.ListBlobs(null, true).ToList();
-
             return list;
         }
+
+        #endregion
+
+        #region Account SAS
 
         public string CreateAccountSasUrl()
         {
@@ -360,19 +368,20 @@ namespace MVC_WebApplication.Data.DataAccess
             string sas = storageAccount.GetSharedAccessSignature(policy);
 
             // create container
-            var containerUri = string.Format("{0}{1}", storageAccount.BlobEndpoint, "sas-container");
+            var containerUri = string.Format("{0}{1}", storageAccount.BlobEndpoint, "azure-container-test");
             var blobContainer = new CloudBlobContainer(new Uri(containerUri), new StorageCredentials(sas));
 
-            blobContainer.Create();
+            //blobContainer.FetchAttributes();
+            //blobContainer.Create();
             blobContainer.CreateIfNotExists();
 
             // create table
-            var tableUri = string.Format("{0}{1}", storageAccount.TableEndpoint, "TableSas");
+            var tableUri = string.Format("{0}{1}", storageAccount.TableEndpoint, "AzureTableTest");
             var table = new CloudTable(new Uri(tableUri), new StorageCredentials(sas));
             table.CreateIfNotExists();
 
             // create storage queue
-            var queueUri = string.Format("{0}{1}", storageAccount.QueueEndpoint, "sas-queue");
+            var queueUri = string.Format("{0}{1}", storageAccount.QueueEndpoint, "azure-queue-test");
             var queue = new CloudQueue(new Uri(queueUri), new StorageCredentials(sas));
             queue.CreateIfNotExists();
 
@@ -381,8 +390,8 @@ namespace MVC_WebApplication.Data.DataAccess
 
         public string CreateStoredAccessPolicy()
         {
+            // creating policy
             CloudBlobContainer container = GetContainerReference();
-
             var storedPolicy = new SharedAccessBlobPolicy
             {
                 Permissions = SharedAccessBlobPermissions.List | SharedAccessBlobPermissions.Read
@@ -393,6 +402,7 @@ namespace MVC_WebApplication.Data.DataAccess
 
             container.SetPermissions(containerPermissions);
 
+            // using policy
             var policy = new SharedAccessBlobPolicy
             {
                 SharedAccessExpiryTime = DateTime.UtcNow.AddDays(7)
@@ -420,17 +430,21 @@ namespace MVC_WebApplication.Data.DataAccess
             return container.Uri + invalidSasContainerToken;
         }
 
+
+        #endregion
+
+        #region Anonymous access
+        
         public List<IListBlobItem> ListBlobsAnonymously()
         {
-            var container = new CloudBlobContainer(new Uri(@"https://productstoragenosql.blob.core.windows.net/products"));
+            var container = new CloudBlobContainer(new Uri(@"https://productdbstorage.blob.core.windows.net/products"));
 
             List<IListBlobItem> list = container.ListBlobs(null, true).ToList();
 
             return list;
         }
 
-
-
+        #endregion
 
         public CloudBlobContainer GetContainerReference()
         {
