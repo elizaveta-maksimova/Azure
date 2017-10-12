@@ -80,7 +80,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\ProductDataAccess.cs" />
-    <Compile Include="DataAccess\StorageDataAccess.cs" />
+    <Compile Include="DataAccess\BlobStorageDataAccess.cs" />
+    <Compile Include="DataAccess\TableStorageDatAccess.cs" />
+    <Compile Include="Model\EmployeeEntity.cs" />
+    <Compile Include="Model\Gender.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

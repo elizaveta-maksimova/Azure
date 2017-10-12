@@ -10,12 +10,12 @@ namespace MVC_WebApplication.BL.Account
     public class ProductService
     {
         private readonly ProductDataAccess _productDataAccess;
-        private readonly StorageDataAccess _storageDataAccess;
+        private readonly BlobStorageDataAccess _storageDataAccess;
 
         public ProductService()
         {
             _productDataAccess = new ProductDataAccess();
-            _storageDataAccess = new StorageDataAccess();
+            _storageDataAccess = new BlobStorageDataAccess();
         }
 
         public List<ProductEntity> GetAllProducts()

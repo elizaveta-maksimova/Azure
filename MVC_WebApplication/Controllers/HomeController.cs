@@ -12,12 +12,12 @@ namespace MVC_WebApplication.Controllers
     public class HomeController : Controller
     {
         private readonly ProductService _productService;
-        private readonly StorageDataAccess _storageDataAccess;
+        private readonly BlobStorageDataAccess _storageDataAccess;
 
         public HomeController()
         {
             _productService = new ProductService();
-            _storageDataAccess = new StorageDataAccess();
+            _storageDataAccess = new BlobStorageDataAccess();
         }
 
         public ActionResult Index()
@@ -93,7 +93,7 @@ namespace MVC_WebApplication.Controllers
 
         public ActionResult Demo()
         {
-            //_storageDataAccess.UploadFileInBlocks();
+            _storageDataAccess.TableLinqOperations();
 
             return View();
         }

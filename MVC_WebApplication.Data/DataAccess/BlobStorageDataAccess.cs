@@ -12,10 +12,12 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
+using MVC_WebApplication.Data.Model;
+using Newtonsoft.Json.Converters;
 
 namespace MVC_WebApplication.Data.DataAccess
 {
-    public class StorageDataAccess
+    public class BlobStorageDataAccess
     {
         private const string ConnectionStringSettingName = "StorageConnectionString";
         private const string ContainerName = "products";
